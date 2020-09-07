@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+
+	<head name="viewport" content="width=device-width, initial-scale=1.0">
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script>
+		<title>Vue Event</title>
+	</head>
+
+<body>
+	<div id="app">
+		<dp-notice @message-shown="recordMessage"></dp-notice>
+		<hr />
+		<h3>These messages have been show:</h3>
+		<ul>
+			<li v-for="message in messages">{{message}}</li>
+		</ul>
+	</div>
+	<script>
+
+		Vue.component('dp-notice', {
+			data: () => {
+				return {
+					showMessage: false
+				}
+			},
+			methods: {
+				showTheMessage() {
+					this.showMessage = !this.showMessage;
+					this.$emit('message-shown', this._uid);
+					console.log('after emit');
+				}
+
+			},
+			props: ['message', 'status'],
+			template: `<div>
+				<button @click="showTheMessage()">Show Message</button> 
+				<span v-show="showMessage">
+					Here is the message
+				</span>
+			</div>`
+		});
+
+		const app = new Vue({
+			el: '#app',
+			data: {
+				messages: []
+			},
+			methods: {
+				recordMessage(e) {
+					console.log('message recorded');
+					this.messages.push('new message');
+				}
+			}
+		});
+	</script>
+</body>
+
+</html>

@@ -40,8 +40,8 @@
 		<dp-notice message="Log out when finished."></dp-notice>
 		<dp-notice message="A third." status="off"></dp-notice>
 
-		<dp-notice>
-			<h2 slot="header">Customer Header</h2>
+		<!-- EVENT DOES NOT WORK -->
+		<dp-notice @show="showedMessage">
 			This is the slot info.
 			<div slot="footer">
 				<b>another kind of footer: {{message}}</b>
@@ -62,8 +62,22 @@
 		};
 
 		Vue.component('dp-notice', {
+			data: () => {
+				return {
+					mainTitle: 'MAIN TITLE',
+					showMessage: false
+				}
+			},
+			methods: {
+				showTheMessage() {
+					this.showMessage = !this.showMessage;
+					this.$emit('show', this._uid);
+					console.log('after emit');
+				}
+
+			},
 			props: ['message', 'status'],
-			template: `<div :class="[status === 'off' ? 'statusOff' : 'statusOn']">This is the notice: {{message || "(no message)"}}
+			template: `<div :class="[status === 'off' ? 'statusOff' : 'statusOn']">{{mainTitle}}: This is the notice: {{message || "(no message)"}}
 				<div class="itemCard">
 					<slot name="header">
 						<h3>HEADER</h3>
@@ -71,6 +85,12 @@
 					<span class="insideInfo">
 						<slot>This is where info would go.</slot>
 					</span>
+					<div>
+						<button @click="showTheMessage()">Show Message</button>
+						<div v-show="showMessage">
+							Here is the message
+						</div>
+					</div>
 					<slot name="footer">
 						<div>
 							<i>footer</i>
@@ -93,6 +113,9 @@
 					setTimeout(() => {
 						this.message = 'changed';
 					}, 2000);
+				},
+				showedMessage(e) {
+					console.log('message was shown');
 				}
 			}
 		});
