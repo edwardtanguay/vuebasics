@@ -36,17 +36,16 @@
 		<div>
 			<flashcard-component></flashcard-component>
 		</div>
-		<dp-notice message="Press the A key." status="off"></dp-notice>
-		<dp-notice message="Log out when finished."></dp-notice>
-		<dp-notice message="A third." status="off"></dp-notice>
 
-		<!-- EVENT DOES NOT WORK -->
+		<!-- TODO: FIGURE OUT WHY IT DOESN'T WORK IF YOU REMOVE THE @SHOW HERE? -->
+		<dp-notice message="A third." status="off" @show="showedMessage"></dp-notice>
 		<dp-notice @show="showedMessage">
 			This is the slot info.
 			<div slot="footer">
 				<b>another kind of footer: {{message}}</b>
 			</div>
 		</dp-notice>
+
 		<dp-notice></dp-notice>
 	</div>
 	<script>
