@@ -15,6 +15,18 @@
 			.statusOff {
 				color: tomato;
 			}
+
+			.insideInfo {
+				border: 1px solid #ccc;
+				background-color: #eee;
+			}
+
+			.itemCard {
+				border: 1px solid #ccc;
+				margin: 10px 0 10px 0;
+				padding: 10px;
+				background-color: #ddd;
+			}
 		</style>
 	</head>
 
@@ -27,6 +39,14 @@
 		<dp-notice message="Press the A key." status="off"></dp-notice>
 		<dp-notice message="Log out when finished."></dp-notice>
 		<dp-notice message="A third." status="off"></dp-notice>
+
+		<dp-notice>
+			<h2 slot="header">Customer Header</h2>
+			This is the slot info.
+			<div slot="footer">
+				<b>another kind of footer: {{message}}</b>
+			</div>
+		</dp-notice>
 		<dp-notice></dp-notice>
 	</div>
 	<script>
@@ -43,8 +63,22 @@
 
 		Vue.component('dp-notice', {
 			props: ['message', 'status'],
-			template: `<div :class="[status === 'off' ? 'statusOff' : 'statusOn']">This is the notice: {{message || "(no message)"}}</div>`
-        });
+			template: `<div :class="[status === 'off' ? 'statusOff' : 'statusOn']">This is the notice: {{message || "(no message)"}}
+				<div class="itemCard">
+					<slot name="header">
+						<h3>HEADER</h3>
+					</slot>
+					<span class="insideInfo">
+						<slot>This is where info would go.</slot>
+					</span>
+					<slot name="footer">
+						<div>
+							<i>footer</i>
+						</div>
+					</slot>
+				</div>
+			</slot>`
+		});
 
 		const app = new Vue({
 			el: '#app',
