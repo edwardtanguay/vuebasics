@@ -1,43 +1,13 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-	<meta charset="UTF-8">
-
-	<head name="viewport" content="width=device-width, initial-scale=1.0">
+	<head>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/2.1.4/vue.js"></script>
-		<title>Vue Basic</title>
-		<style>
-			.statusOn {
-				color: green;
-			}
-
-			.statusOff {
-				color: tomato;
-			}
-
-			.insideInfo {
-				border: 1px solid #ccc;
-				background-color: #eee;
-			}
-
-			.itemCard {
-				border: 1px solid #ccc;
-				margin: 10px 0 10px 0;
-				padding: 10px;
-				background-color: #ddd;
-			}
-		</style>
 	</head>
 
 <body>
 	<div id="app">
-		<div>[{{message}}]</div>
-		<div>
-			<flashcard-component></flashcard-component>
-		</div>
-
-		<!-- TODO: FIGURE OUT WHY IT DOESN'T WORK IF YOU REMOVE THE @SHOW HERE? -->
 		<dp-notice message="A third." status="off" @show="showedMessage"></dp-notice>
 		<dp-notice @show="showedMessage">
 			This is the slot info.
@@ -45,25 +15,11 @@
 				<b>another kind of footer: {{message}}</b>
 			</div>
 		</dp-notice>
-
-		<dp-notice></dp-notice>
 	</div>
 	<script>
-
-		const flashcardComponent = {
-			data: function () {
-				return {
-					front: 'house',
-					back: 'Haus'
-				}
-			},
-			template: '<div><div>{{front}} / {{back}}</div></div>'
-		};
-
 		Vue.component('dp-notice', {
 			data: () => {
 				return {
-					mainTitle: 'MAIN TITLE',
 					showMessage: false
 				}
 			},
@@ -76,49 +32,17 @@
 
 			},
 			props: ['message', 'status'],
-			template: `<div :class="[status === 'off' ? 'statusOff' : 'statusOn']">{{mainTitle}}: This is the notice: {{message || "(no message)"}}
-				<div class="itemCard">
-					<slot name="header">
-						<h3>HEADER</h3>
-					</slot>
-					<span class="insideInfo">
-						<slot>This is where info would go.</slot>
-					</span>
-					<div>
-						<button @click="showTheMessage()">Show Message</button>
-						<div v-show="showMessage">
-							Here is the message
-						</div>
-					</div>
-					<slot name="footer">
-						<div>
-							<i>footer</i>
-						</div>
-					</slot>
-				</div>
-			</slot>`
+			template: `<button @click="showTheMessage()">Show Message</button>`
 		});
 
 		const app = new Vue({
 			el: '#app',
-			components: {
-				'flashcard-component': flashcardComponent
-			},
-			data: {
-				message: 'hello'
-			},
 			methods: {
-				initialize() {
-					setTimeout(() => {
-						this.message = 'changed';
-					}, 2000);
-				},
 				showedMessage() {
 					console.log('message was shown');
 				}
 			}
 		});
-		app.initialize();
 	</script>
 </body>
 
